@@ -1,3 +1,18 @@
+## Description
+
+MovieApp
+
+This repository contain an example from integration of API in React using Fetch and Material UI.
+
+## API 
+
+    API used is http://www.omdbapi.com/, this API provides data of movies and series.
+
+## Style
+
+    Style used is Material UI https://material-ui.com
+    
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

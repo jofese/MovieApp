@@ -1,26 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Fragment } from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import NavBar from './components/NavBar';
+import MovieList from './components/MovieList';
+import { Typography } from '@material-ui/core';
+
+class App extends React.Component{
+
+  constructor(){
+    super();
+    this.state = {
+      movieList:[],
+      search:'',
+      error:'Search movie'
+    };
+  };
+
+  searchOnApi = async (term) => {
+    if(term === ''){
+      return this.setState({error:'Search movie.',movieList:[]}); 
+    }
+    let res = await fetch('http://www.omdbapi.com/?apikey={YOUR_APIKEY}&s='+term);
+    let data = await res.json();
+    if(data.Response === 'True'){
+      this.setState({movieList: data.Search,error:''});
+    }else{
+      this.setState({error:data.Error,movieList:[]});
+    }
+    
+  }
+
+  onChangeSearch(value){
+    this.searchOnApi(value);
+  }
+
+  render(){
+    return (
+      <div>
+        <NavBar onChangeSearch={this.onChangeSearch.bind(this)}/>
+      {
+        this.state.error !== ''? <Typography align="center" style={{marginTop:'1rem'}}>{this.state.error}</Typography> 
+        : <MovieList movieList={this.state.movieList}/>
+      }
+      </div>
+    );
+  };
 }
 
 export default App;
